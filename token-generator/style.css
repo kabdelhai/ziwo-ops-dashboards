@@ -1,0 +1,64 @@
+/* Inspired by Ziwo main page */
+body {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  background-color: #f9f9f9;
+  margin: 0;
+  text-align: center;
+}
+
+header {
+  background-color: #002b5c;
+  color: white;
+  padding: 20px 0;
+}
+
+.logo {
+  width: 120px;
+  margin-bottom: 10px;
+}
+
+h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+main {
+  margin: 40px auto;
+  max-width: 400px;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+input {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+button {
+  padding: 10px;
+  font-size: 16px;
+  background-color: #ff6f00;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+button:hover {
+  background-color: #e65c00;
+}
+
+.result {
+  margin-top: 20px;
+  font-weight: bold;
+  word-break: break-all;
+  color: #002b5c;
+}
+

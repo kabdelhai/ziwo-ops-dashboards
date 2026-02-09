@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ziwo Access Token Generator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Ziwo Access Token Generator</h1>
+  </header>
+
+  <main>
+    <div class="form-container">
+      <input type="text" id="client" placeholder="Client Name (e.g. mycompany)" />
+      <input type="text" id="username" placeholder="Username" />
+      <input type="password" id="password" placeholder="Password" />
+      <button onclick="generateToken()">Generate Token</button>
+    </div>
+
+    <div id="result" class="result"></div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
