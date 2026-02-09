@@ -1,28 +1,177 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
   <title>Ziwo Access Token Generator</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <header>
-    <h1>Ziwo Access Token Generator</h1>
-  </header>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <main>
-    <div class="form-container">
-      <input type="text" id="client" placeholder="Client Name (e.g. mycompany)" />
-      <input type="text" id="username" placeholder="Username" />
-      <input type="password" id="password" placeholder="Password" />
-      <button onclick="generateToken()">Generate Token</button>
+  <style>
+    :root {
+      --ziwo-bg: #0f172a;
+      --ziwo-card: #111827;
+      --ziwo-border: #1f2933;
+      --ziwo-primary: #22c55e;
+      --ziwo-text: #e5e7eb;
+      --ziwo-muted: #9ca3af;
+      --ziwo-input: #020617;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #020617, var(--ziwo-bg));
+      color: var(--ziwo-text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 440px;
+      background: var(--ziwo-card);
+      border: 1px solid var(--ziwo-border);
+      border-radius: 14px;
+      padding: 28px;
+      box-shadow: 0 20px 40px rgba(0,0,0,.6);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .logo img {
+      height: 42px;
+    }
+
+    h1 {
+      font-size: 20px;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      color: var(--ziwo-muted);
+      margin-bottom: 6px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      background: var(--ziwo-input);
+      border: 1px solid var(--ziwo-border);
+      border-radius: 8px;
+      color: var(--ziwo-text);
+      margin-bottom: 16px;
+      font-size: 14px;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--ziwo-primary);
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: var(--ziwo-primary);
+      border: none;
+      border-radius: 8px;
+      color: #020617;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    .result {
+      margin-top: 16px;
+      padding: 12px;
+      background: #020617;
+      border: 1px solid var(--ziwo-border);
+      border-radius: 8px;
+      font-family: monospace;
+      font-size: 13px;
+      word-break: break-all;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 18px;
+      font-size: 12px;
+      color: var(--ziwo-muted);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <div class="logo">
+      <!-- Replace with official Ziwo SVG if needed -->
     </div>
 
-    <div id="result" class="result"></div>
-  </main>
+    <h1>Ziwo Access Token Generator</h1>
 
-  <script src="script.js"></script>
+    <label>Client Name</label>
+    <input id="client" placeholder="example" />
+
+    <label>Username</label>
+    <input id="username" />
+
+    <label>Password</label>
+    <input id="password" type="password" />
+
+    <button onclick="generateToken()">Generate Token</button>
+
+    <div id="output" class="result" style="display:none"></div>
+
+    <div class="footer">
+      Internal tool • GitHub Pages
+    </div>
+  </div>
+
+  <script>
+    async function generateToken() {
+      const client = document.getElementById('client').value.trim();
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const output = document.getElementById('output');
+
+      if (!client || !username || !password) {
+        alert("All fields are required");
+        return;
+      }
+
+      output.style.display = 'block';
+      output.textContent = 'Fetching token...';
+
+      try {
+        const res = await fetch(`https://${client}-api.aswat.co/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams({ username, password })
+        });
+
+        const data = await res.json();
+        output.textContent = data?.content?.access_token || 'Token not found';
+      } catch (err) {
+        output.textContent = 'Request failed (CORS or network issue)';
+      }
+    }
+  </script>
 </body>
 </html>
-
