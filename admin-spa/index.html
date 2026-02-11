@@ -95,6 +95,41 @@
         </div>
     </div>
 
-    <script src="app.js"></script>
+    <!-- Agents View Container -->
+    <div class="container dashboard agents-view" id="agentsContainer">
+        <div class="header">
+            <h1>👥 Agents List</h1>
+            <div class="user-info">
+                <button class="back-btn" id="backToMenuBtn">← Back to Menu</button>
+                <button class="logout-btn" id="logoutBtn2">Logout</button>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="action-bar">
+                <div class="info-section">
+                    <span id="agentsCount">Loading...</span>
+                </div>
+                <button class="btn download-btn" id="downloadAgentsBtn">
+                    📥 Download CSV
+                </button>
+            </div>
+
+            <div id="agentsTableContainer">
+                <div class="loading-spinner">
+                    <div class="loader"></div>
+                    <p>Loading agents...</p>
+                </div>
+            </div>
+
+            <div class="pagination" id="paginationControls" style="display: none;">
+                <button class="pagination-btn" id="prevPageBtn">← Previous</button>
+                <span class="page-info" id="pageInfo">Page 1</span>
+                <button class="pagination-btn" id="nextPageBtn">Next →</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="app.js"></script>
 </body>
 </html>

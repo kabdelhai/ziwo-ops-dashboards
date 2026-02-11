@@ -1,149 +1,117 @@
-// Ziwo Automation - Authentication Logic
-// This handles the API authentication and token generation
+// Main Application File
+import Session from './session.js';
+import AuthService from './services/auth-service.js';
+import AgentsView from './views/agents-view.js';
 
-// Global variables to store session data
-let accessToken = null;
-let currentUsername = null;
-let currentClientName = null;
-
-// DOM elements
-const loginContainer = document.getElementById('loginContainer');
-const dashboardContainer = document.getElementById('dashboardContainer');
-const form = document.getElementById('authForm');
-const submitBtn = document.getElementById('submitBtn');
-const result = document.getElementById('result');
-const displayUsername = document.getElementById('displayUsername');
-const logoutBtn = document.getElementById('logoutBtn');
-
-// Menu links
-const agentsLink = document.getElementById('agentsLink');
-const numbersLink = document.getElementById('numbersLink');
-const queuesLink = document.getElementById('queuesLink');
-
-// Handle form submission
-form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    // Get form values
-    const clientName = document.getElementById('clientName').value.trim();
-    const username = document.getElementById('username').value.trim();
-    const password = document.getElementById('password').value;
-
-    // Reset displays
-    result.style.display = 'none';
-
-    // Disable button and show loading
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = '<span class="loader"></span>Logging in...';
-
-    try {
-        // Call the authentication function
-        const token = await authenticateWithZiwo(clientName, username, password);
+class ZiwoAutomationApp {
+    constructor() {
+        this.session = new Session();
+        this.authService = new AuthService();
         
-        // Success - save credentials and show dashboard
-        accessToken = token;
-        currentUsername = username;
-        currentClientName = clientName;
-        
-        showDashboard();
-
-    } catch (error) {
-        // Error handling
-        console.error('Authentication error:', error);
-        result.className = 'result error';
-        result.textContent = `✗ ${error.message}`;
-        result.style.display = 'block';
-    } finally {
-        // Re-enable button
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = 'Login';
+        this.initElements();
+        this.initViews();
+        this.attachEventListeners();
     }
-});
 
-// Show dashboard after successful login
-function showDashboard() {
-    loginContainer.style.display = 'none';
-    dashboardContainer.classList.add('active');
-    displayUsername.textContent = currentUsername;
-}
+    initElements() {
+        // Containers
+        this.loginContainer = document.getElementById('loginContainer');
+        this.dashboardContainer = document.getElementById('dashboardContainer');
+        
+        // Login form
+        this.loginForm = document.getElementById('authForm');
+        this.submitBtn = document.getElementById('submitBtn');
+        this.loginResult = document.getElementById('result');
+        
+        // Dashboard
+        this.displayUsername = document.getElementById('displayUsername');
+        this.logoutBtn = document.getElementById('logoutBtn');
+        this.logoutBtn2 = document.getElementById('logoutBtn2');
+        
+        // Menu links
+        this.agentsLink = document.getElementById('agentsLink');
+        this.numbersLink = document.getElementById('numbersLink');
+        this.queuesLink = document.getElementById('queuesLink');
+    }
 
-// Handle logout
-logoutBtn.addEventListener('click', () => {
-    // Clear session data
-    accessToken = null;
-    currentUsername = null;
-    currentClientName = null;
-    
-    // Reset form
-    form.reset();
-    result.style.display = 'none';
-    
-    // Show login screen
-    dashboardContainer.classList.remove('active');
-    loginContainer.style.display = 'block';
-});
+    initViews() {
+        this.agentsView = new AgentsView(this.session, () => this.showDashboard());
+    }
 
-// Menu link handlers (placeholders for now)
-agentsLink.addEventListener('click', (e) => {
-    e.preventDefault();
-    alert('Agents List feature - Coming soon!\nAccess Token: ' + accessToken.substring(0, 20) + '...');
-});
-
-numbersLink.addEventListener('click', (e) => {
-    e.preventDefault();
-    alert('Numbers List feature - Coming soon!\nAccess Token: ' + accessToken.substring(0, 20) + '...');
-});
-
-queuesLink.addEventListener('click', (e) => {
-    e.preventDefault();
-    alert('Queues List feature - Coming soon!\nAccess Token: ' + accessToken.substring(0, 20) + '...');
-});
-
-// Authentication function
-async function authenticateWithZiwo(clientName, username, password) {
-    // Construct the API URL
-    const apiUrl = `https://${clientName}-api.aswat.co/auth/login`;
-
-    // Create form data
-    const formData = new URLSearchParams();
-    formData.append('username', username);
-    formData.append('password', password);
-
-    console.log('Attempting to authenticate with:', apiUrl);
-
-    try {
-        // Make the API request
-        const response = await fetch(apiUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: formData.toString(),
-            mode: 'cors'
+    attachEventListeners() {
+        // Login
+        this.loginForm.addEventListener('submit', (e) => this.handleLogin(e));
+        
+        // Logout
+        this.logoutBtn.addEventListener('click', () => this.handleLogout());
+        this.logoutBtn2.addEventListener('click', () => this.handleLogout());
+        
+        // Menu navigation
+        this.agentsLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            this.showAgentsView();
         });
+        
+        this.numbersLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            alert('Numbers List feature - Coming soon!');
+        });
+        
+        this.queuesLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            alert('Queues List feature - Coming soon!');
+        });
+    }
 
-        console.log('Response status:', response.status);
+    async handleLogin(e) {
+        e.preventDefault();
+        
+        const clientName = document.getElementById('clientName').value.trim();
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value;
 
-        // Check if response is ok
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}. Please check your credentials.`);
+        this.loginResult.style.display = 'none';
+        this.submitBtn.disabled = true;
+        this.submitBtn.innerHTML = '<span class="loader"></span>Logging in...';
+
+        try {
+            const accessToken = await this.authService.login(clientName, username, password);
+            this.session.set(accessToken, username, clientName);
+            this.showDashboard();
+        } catch (error) {
+            console.error('Authentication error:', error);
+            this.loginResult.className = 'result error';
+            this.loginResult.textContent = `✗ ${error.message}`;
+            this.loginResult.style.display = 'block';
+        } finally {
+            this.submitBtn.disabled = false;
+            this.submitBtn.innerHTML = 'Login';
         }
+    }
 
-        const data = await response.json();
-        console.log('Response received');
+    handleLogout() {
+        this.session.clear();
+        this.loginForm.reset();
+        this.loginResult.style.display = 'none';
+        this.agentsView.hide();
+        this.dashboardContainer.classList.remove('active');
+        this.loginContainer.style.display = 'block';
+    }
 
-        // Extract access token
-        if (data.content && data.content.access_token) {
-            return data.content.access_token;
-        } else {
-            throw new Error('No access token received. Please check your credentials.');
-        }
+    showDashboard() {
+        this.loginContainer.style.display = 'none';
+        this.agentsView.hide();
+        this.dashboardContainer.classList.add('active');
+        this.displayUsername.textContent = this.session.getUsername();
+    }
 
-    } catch (error) {
-        // Handle different types of errors
-        if (error.message.includes('Failed to fetch')) {
-            throw new Error('Unable to connect to Ziwo API. This may be due to CORS restrictions. Please ensure you are using a proxy server or the API allows browser requests.');
-        }
-        throw error;
+    showAgentsView() {
+        this.dashboardContainer.classList.remove('active');
+        this.agentsView.show();
     }
 }
+
+// Initialize the application when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    new ZiwoAutomationApp();
+});

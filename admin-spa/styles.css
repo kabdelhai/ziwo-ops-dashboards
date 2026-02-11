@@ -243,3 +243,159 @@ input::placeholder {
     color: #718096;
     margin: 0;
 }
+
+.agents-view {
+    max-width: 1200px;
+}
+
+.back-btn {
+    padding: 6px 16px;
+    background: transparent;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-right: 12px;
+}
+
+.back-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.action-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.info-section {
+    font-size: 14px;
+    color: #4a5568;
+    font-weight: 600;
+}
+
+.download-btn {
+    padding: 10px 20px;
+    font-size: 14px;
+    width: auto;
+}
+
+.loading-spinner {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.loading-spinner p {
+    margin-top: 16px;
+    color: #718096;
+    font-size: 14px;
+}
+
+.agents-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.agents-table thead {
+    background: #f7fafc;
+}
+
+.agents-table th {
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 13px;
+    font-weight: 600;
+    color: #2d3748;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.agents-table td {
+    padding: 12px 16px;
+    font-size: 13px;
+    color: #4a5568;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.agents-table tbody tr:hover {
+    background: #f7fafc;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.status-badge.active {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.status-badge.inactive {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 2px solid #e2e8f0;
+}
+
+.pagination-btn {
+    padding: 8px 16px;
+    background: white;
+    color: #2d3748;
+    border: 2px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.pagination-btn:hover:not(:disabled) {
+    border-color: #e91e63;
+    color: #e91e63;
+}
+
+.pagination-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.page-info {
+    font-size: 14px;
+    color: #4a5568;
+    font-weight: 600;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+.error-message {
+    background: #fee2e2;
+    border: 1px solid #fca5a5;
+    color: #991b1b;
+    padding: 16px;
+    border-radius: 8px;
+    text-align: center;
+    margin: 24px 0;
+}
