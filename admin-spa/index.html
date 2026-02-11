@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ziwo Automation Platform</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Ziwo Automation</h1>
+            <p>Secure API Access Portal</p>
+        </div>
+        
+        <div class="content">
+            <form id="authForm">
+                <div class="form-group">
+                    <label for="clientName">Client Name</label>
+                    <input 
+                        type="text" 
+                        id="clientName" 
+                        name="clientName" 
+                        placeholder="e.g., yourcompany"
+                        required
+                    >
+                    <p class="info-text">Your Ziwo client identifier</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input 
+                        type="text" 
+                        id="username" 
+                        name="username" 
+                        placeholder="Enter your username"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        placeholder="Enter your password"
+                        required
+                    >
+                </div>
+
+                <button type="submit" class="btn" id="submitBtn">
+                    Generate Access Token
+                </button>
+            </form>
+
+            <div id="result" class="result"></div>
+
+            <div id="tokenDisplay" class="token-display">
+                <h3>✅ Access Token Generated</h3>
+                <div class="token-value" id="tokenValue"></div>
+                <button class="copy-btn" id="copyBtn">📋 Copy Token</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
