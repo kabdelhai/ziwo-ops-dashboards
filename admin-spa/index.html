@@ -7,10 +7,11 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
+    <!-- Login Container -->
+    <div class="container" id="loginContainer">
         <div class="header">
             <h1>🚀 Ziwo Automation</h1>
-            <p>Secure API Access Portal</p>
+            <p>Automation Platform</p>
         </div>
         
         <div class="content">
@@ -50,16 +51,46 @@
                 </div>
 
                 <button type="submit" class="btn" id="submitBtn">
-                    Generate Access Token
+                    Login
                 </button>
             </form>
 
             <div id="result" class="result"></div>
+        </div>
+    </div>
 
-            <div id="tokenDisplay" class="token-display">
-                <h3>✅ Access Token Generated</h3>
-                <div class="token-value" id="tokenValue"></div>
-                <button class="copy-btn" id="copyBtn">📋 Copy Token</button>
+    <!-- Dashboard Container -->
+    <div class="container dashboard" id="dashboardContainer">
+        <div class="header">
+            <h1>🚀 Ziwo Automation</h1>
+            <div class="user-info">
+                <span class="welcome-text">Welcome, <strong id="displayUsername"></strong></span>
+                <button class="logout-btn" id="logoutBtn">Logout</button>
+            </div>
+        </div>
+        
+        <div class="content">
+            <h2 class="dashboard-title">Automation Tools</h2>
+            <p class="dashboard-subtitle">Select a tool to get started</p>
+
+            <div class="menu-grid">
+                <a href="#" class="menu-item" id="agentsLink">
+                    <div class="menu-icon">👥</div>
+                    <h3>Agents List</h3>
+                    <p>View and manage agents</p>
+                </a>
+
+                <a href="#" class="menu-item" id="numbersLink">
+                    <div class="menu-icon">📞</div>
+                    <h3>Numbers List</h3>
+                    <p>View and manage numbers</p>
+                </a>
+
+                <a href="#" class="menu-item" id="queuesLink">
+                    <div class="menu-icon">📋</div>
+                    <h3>Queues List</h3>
+                    <p>View and manage queues</p>
+                </a>
             </div>
         </div>
     </div>

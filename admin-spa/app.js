@@ -1,12 +1,24 @@
 // Ziwo Automation - Authentication Logic
 // This handles the API authentication and token generation
 
+// Global variables to store session data
+let accessToken = null;
+let currentUsername = null;
+let currentClientName = null;
+
+// DOM elements
+const loginContainer = document.getElementById('loginContainer');
+const dashboardContainer = document.getElementById('dashboardContainer');
 const form = document.getElementById('authForm');
 const submitBtn = document.getElementById('submitBtn');
 const result = document.getElementById('result');
-const tokenDisplay = document.getElementById('tokenDisplay');
-const tokenValue = document.getElementById('tokenValue');
-const copyBtn = document.getElementById('copyBtn');
+const displayUsername = document.getElementById('displayUsername');
+const logoutBtn = document.getElementById('logoutBtn');
+
+// Menu links
+const agentsLink = document.getElementById('agentsLink');
+const numbersLink = document.getElementById('numbersLink');
+const queuesLink = document.getElementById('queuesLink');
 
 // Handle form submission
 form.addEventListener('submit', async (e) => {
@@ -19,23 +31,21 @@ form.addEventListener('submit', async (e) => {
 
     // Reset displays
     result.style.display = 'none';
-    tokenDisplay.style.display = 'none';
 
     // Disable button and show loading
     submitBtn.disabled = true;
-    submitBtn.innerHTML = '<span class="loader"></span>Authenticating...';
+    submitBtn.innerHTML = '<span class="loader"></span>Logging in...';
 
     try {
         // Call the authentication function
-        const accessToken = await authenticateWithZiwo(clientName, username, password);
+        const token = await authenticateWithZiwo(clientName, username, password);
         
-        // Success - display token
-        tokenValue.textContent = accessToken;
-        tokenDisplay.style.display = 'block';
+        // Success - save credentials and show dashboard
+        accessToken = token;
+        currentUsername = username;
+        currentClientName = clientName;
         
-        result.className = 'result success';
-        result.textContent = '✓ Authentication successful! Your access token is ready.';
-        result.style.display = 'block';
+        showDashboard();
 
     } catch (error) {
         // Error handling
@@ -46,8 +56,47 @@ form.addEventListener('submit', async (e) => {
     } finally {
         // Re-enable button
         submitBtn.disabled = false;
-        submitBtn.innerHTML = 'Generate Access Token';
+        submitBtn.innerHTML = 'Login';
     }
+});
+
+// Show dashboard after successful login
+function showDashboard() {
+    loginContainer.style.display = 'none';
+    dashboardContainer.classList.add('active');
+    displayUsername.textContent = currentUsername;
+}
+
+// Handle logout
+logoutBtn.addEventListener('click', () => {
+    // Clear session data
+    accessToken = null;
+    currentUsername = null;
+    currentClientName = null;
+    
+    // Reset form
+    form.reset();
+    result.style.display = 'none';
+    
+    // Show login screen
+    dashboardContainer.classList.remove('active');
+    loginContainer.style.display = 'block';
+});
+
+// Menu link handlers (placeholders for now)
+agentsLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    alert('Agents List feature - Coming soon!\nAccess Token: ' + accessToken.substring(0, 20) + '...');
+});
+
+numbersLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    alert('Numbers List feature - Coming soon!\nAccess Token: ' + accessToken.substring(0, 20) + '...');
+});
+
+queuesLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    alert('Queues List feature - Coming soon!\nAccess Token: ' + accessToken.substring(0, 20) + '...');
 });
 
 // Authentication function
@@ -98,29 +147,3 @@ async function authenticateWithZiwo(clientName, username, password) {
         throw error;
     }
 }
-
-// Copy token functionality
-copyBtn.addEventListener('click', async () => {
-    const token = tokenValue.textContent;
-    
-    try {
-        await navigator.clipboard.writeText(token);
-        copyBtn.textContent = '✓ Copied!';
-        setTimeout(() => {
-            copyBtn.textContent = '📋 Copy Token';
-        }, 2000);
-    } catch (err) {
-        // Fallback for older browsers
-        const textArea = document.createElement('textarea');
-        textArea.value = token;
-        document.body.appendChild(textArea);
-        textArea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textArea);
-        
-        copyBtn.textContent = '✓ Copied!';
-        setTimeout(() => {
-            copyBtn.textContent = '📋 Copy Token';
-        }, 2000);
-    }
-});
