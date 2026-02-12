@@ -2,6 +2,8 @@
 import Session from './session.js';
 import AuthService from './auth-service.js';
 import AgentsView from './agents-view.js';
+import QueuesView from './queues-view.js';
+import NumbersView from './numbers-view.js';
 
 class ZiwoAutomationApp {
     constructor() {
@@ -36,6 +38,8 @@ class ZiwoAutomationApp {
 
     initViews() {
         this.agentsView = new AgentsView(this.session, () => this.showDashboard());
+        this.queuesView = new QueuesView(this.session, () => this.showDashboard());
+        this.numbersView = new NumbersView(this.session, () => this.showDashboard());
     }
 
     attachEventListeners() {
@@ -54,12 +58,12 @@ class ZiwoAutomationApp {
         
         this.numbersLink.addEventListener('click', (e) => {
             e.preventDefault();
-            alert('Numbers List feature - Coming soon!');
+            this.showNumbersView();
         });
         
         this.queuesLink.addEventListener('click', (e) => {
             e.preventDefault();
-            alert('Queues List feature - Coming soon!');
+            this.showQueuesView();
         });
     }
 
@@ -94,6 +98,8 @@ class ZiwoAutomationApp {
         this.loginForm.reset();
         this.loginResult.style.display = 'none';
         this.agentsView.hide();
+        this.queuesView.hide();
+        this.numbersView.hide();
         this.dashboardContainer.classList.remove('active');
         this.loginContainer.style.display = 'block';
     }
@@ -101,13 +107,31 @@ class ZiwoAutomationApp {
     showDashboard() {
         this.loginContainer.style.display = 'none';
         this.agentsView.hide();
+        this.queuesView.hide();
+        this.numbersView.hide();
         this.dashboardContainer.classList.add('active');
         this.displayUsername.textContent = this.session.getUsername();
     }
 
     showAgentsView() {
         this.dashboardContainer.classList.remove('active');
+        this.queuesView.hide();
+        this.numbersView.hide();
         this.agentsView.show();
+    }
+
+    showQueuesView() {
+        this.dashboardContainer.classList.remove('active');
+        this.agentsView.hide();
+        this.numbersView.hide();
+        this.queuesView.show();
+    }
+
+    showNumbersView() {
+        this.dashboardContainer.classList.remove('active');
+        this.agentsView.hide();
+        this.queuesView.hide();
+        this.numbersView.show();
     }
 }
 
