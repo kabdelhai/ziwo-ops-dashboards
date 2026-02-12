@@ -15,9 +15,9 @@ class NumbersService {
      */
     async fetchNumbers(accessToken, page = 1, limit = 50) {
         const clientName = this.extractClientName(accessToken);
-        const offset = (page - 1) * limit;
+        const skip = (page - 1) * limit;
         
-        const url = `${this.baseUrl.replace('<client-name>', clientName)}/admin/numbers/?limit=${limit}&offset=${offset}`;
+        const url = `${this.baseUrl.replace('<client-name>', clientName)}/admin/numbers/?limit=${limit}&skip=${skip}`;
         
         const response = await fetch(url, {
             method: 'GET',
