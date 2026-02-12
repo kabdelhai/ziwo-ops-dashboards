@@ -1,7 +1,7 @@
 // Main Application File
 import Session from './session.js';
-import AuthService from './services/auth-service.js';
-import AgentsView from './views/agents-view.js';
+import AuthService from './auth-service.js';
+import AgentsView from './agents-view.js';
 
 class ZiwoAutomationApp {
     constructor() {

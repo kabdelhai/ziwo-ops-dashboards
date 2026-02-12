@@ -1,5 +1,5 @@
 // Agents View Component Class
-import AgentsService from '../services/agents-service.js';
+import AgentsService from './agents-service.js';
 
 class AgentsView {
     constructor(session, onBackToMenu) {
