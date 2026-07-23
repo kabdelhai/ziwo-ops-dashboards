@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZIWO Support Dashboard</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="wrap">
+    <header class="top">
+        <div>
+            <h1>ZIWO Support Dashboard</h1>
+            <div class="subtitle">Enter an instance + password once, then open a section below.</div>
+        </div>
+    </header>
+
+    <form id="loginForm" class="login-card">
+        <div class="field">
+            <label for="instance">Instance name</label>
+            <input id="instance" type="text" placeholder="e.g. acme" autocomplete="off" required>
+        </div>
+        <div class="field">
+            <label for="password">Password</label>
+            <input id="password" type="password" placeholder="Super admin password" required>
+        </div>
+        <p class="info-text">Used by whichever section's "Load" button you click.</p>
+    </form>
+
+    <!-- ================= AGENTS ================= -->
+    <details class="obj-section" data-type="agents" open>
+        <summary>
+            <span class="section-title">Agents</span>
+            <span class="section-hint">List agents, statuses, queues &amp; skills</span>
+        </summary>
+        <div class="section-body">
+            <div class="section-actions">
+                <button class="load-btn">Load Agents</button>
+            </div>
+            <p class="status"></p>
+            <div class="results-bar" style="display:none;">
+                <input class="search-box" type="text" placeholder="Filter&hellip;">
+                <span class="count-label"></span>
+                <button class="download-btn">Download CSV</button>
+            </div>
+            <div class="table-wrap"></div>
+        </div>
+    </details>
+
+    <!-- ================= DIDs & EXTENSIONS ================= -->
+    <details class="obj-section" data-type="numbers">
+        <summary>
+            <span class="section-title">DIDs &amp; Extensions</span>
+            <span class="section-hint">Numbers, routing, working hours &amp; after-hours</span>
+        </summary>
+        <div class="section-body">
+            <div class="section-actions">
+                <button class="load-btn">Load DIDs &amp; Extensions</button>
+            </div>
+            <p class="status"></p>
+            <div class="results-bar" style="display:none;">
+                <input class="search-box" type="text" placeholder="Filter&hellip;">
+                <span class="count-label"></span>
+                <button class="download-btn">Download CSV</button>
+            </div>
+            <div class="table-wrap"></div>
+        </div>
+    </details>
+
+    <!-- ================= QUEUES ================= -->
+    <details class="obj-section" data-type="queues">
+        <summary>
+            <span class="section-title">Queues</span>
+            <span class="section-hint">Strategy, extension, caller ID &amp; agents</span>
+        </summary>
+        <div class="section-body">
+            <div class="section-actions">
+                <button class="load-btn">Load Queues</button>
+            </div>
+            <p class="status"></p>
+            <div class="results-bar" style="display:none;">
+                <input class="search-box" type="text" placeholder="Filter&hellip;">
+                <span class="count-label"></span>
+                <button class="download-btn">Download CSV</button>
+            </div>
+            <div class="table-wrap"></div>
+        </div>
+    </details>
+
+    <!-- ================= SMART ROUTING ================= -->
+    <details class="obj-section" data-type="smart_routing">
+        <summary>
+            <span class="section-title">Smart Routing</span>
+            <span class="section-hint">Extract records, or safely delete them</span>
+        </summary>
+        <div class="section-body">
+            <div class="subnav">
+                <button class="subnav-btn active" data-mode="extract">Extract Records</button>
+                <button class="subnav-btn" data-mode="delete">Delete Records</button>
+            </div>
+
+            <!-- ---- Extract sub-panel ---- -->
+            <div class="sr-panel sr-extract-panel">
+                <div class="section-actions">
+                    <button class="load-btn">Load Smart Routing</button>
+                </div>
+                <p class="status"></p>
+                <div class="results-bar" style="display:none;">
+                    <input class="search-box" type="text" placeholder="Filter&hellip;">
+                    <span class="count-label"></span>
+                    <button class="download-btn">Download CSV</button>
+                </div>
+                <div class="table-wrap"></div>
+            </div>
+
+            <!-- ---- Delete sub-panel ---- -->
+            <div class="sr-panel sr-delete-panel" style="display:none;">
+                <div class="delete-panel">
+                    <h3>Danger zone — delete Smart Routing records</h3>
+                    <p class="info-text">Always preview matches first. Deleted records are backed up to <code>smart_routing_backups/</code> on this machine before anything is removed, so they can be restored later.</p>
+
+                    <div class="delete-controls">
+                        <div class="field">
+                            <label>Delete</label>
+                            <select class="delete-mode">
+                                <option value="all">All records</option>
+                                <option value="queue">Specific queue</option>
+                                <option value="ivr">IVR-linked records</option>
+                                <option value="hangup">Hangup-linked records</option>
+                            </select>
+                        </div>
+                        <div class="field delete-target-field">
+                            <label>Queue name</label>
+                            <input class="delete-target" type="text" placeholder="e.g. 337_AR_Queue">
+                        </div>
+                        <button class="preview-delete-btn">Preview matches</button>
+                    </div>
+
+                    <div class="delete-preview" style="display:none;">
+                        <p class="preview-summary"></p>
+                        <div class="confirm-row">
+                            <label>Type <strong>DELETE</strong> to confirm:</label>
+                            <input class="confirm-text" type="text" placeholder="DELETE" autocomplete="off">
+                            <button class="confirm-delete-btn danger-btn" disabled>Delete records</button>
+                        </div>
+                    </div>
+
+                    <div class="delete-result"></div>
+                </div>
+            </div>
+        </div>
+    </details>
+
+    <!-- ================= BGW ONBOARDING ================= -->
+    <details class="obj-section" data-type="bgw">
+        <summary>
+            <span class="section-title">BGW Onboarding</span>
+            <span class="section-hint">Run discovery against one or more BGWs, live</span>
+        </summary>
+        <div class="section-body">
+            <div class="bgw-form">
+                <div class="field bgw-field-wide">
+                    <label>IP address(es) &mdash; one per line, or a single IP</label>
+                    <textarea class="bgw-ips" rows="3" placeholder="10.20.30.40&#10;10.20.30.41"></textarea>
+                </div>
+                <div class="field">
+                    <label>SSH password</label>
+                    <input class="bgw-ssh-pass" type="password" placeholder="SSH password" autocomplete="off">
+                </div>
+                <div class="field">
+                    <label>NetBox API token</label>
+                    <input class="bgw-netbox-token" type="password" placeholder="NetBox token" autocomplete="off">
+                </div>
+                <button class="bgw-run-btn">Run Discovery</button>
+            </div>
+
+            <p class="status bgw-status"></p>
+
+            <div class="bgw-log-wrap" style="display:none;">
+                <div class="bgw-log-header">Live log</div>
+                <pre class="bgw-log"></pre>
+            </div>
+
+            <div class="bgw-results" style="display:none;">
+                <div class="results-bar">
+                    <span class="count-label"></span>
+                    <a class="download-btn bgw-download-link" href="#" download>Download CSV</a>
+                </div>
+                <div class="table-wrap bgw-table-wrap"></div>
+            </div>
+        </div>
+    </details>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
